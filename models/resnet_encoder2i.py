@@ -9,6 +9,7 @@ import torch
 import torch.nn as nn
 from torch.nn.modules import activation
 import torchvision.models as models
+from torchvision.models.resnet import ResNet18_Weights, ResNet50_Weights
 import torch.utils.model_zoo as model_zoo
 from .convlstm1 import ConvLSTM, ConvLSTMCell
 from .seq2batch import SeqToBatch
@@ -161,7 +162,10 @@ def resnet_multiimage_input(num_layers, pretrained=False, inplane=3, use_convlst
     model = ResNetMultiImageInput(block_type, blocks, inplane=inplane, use_convlstm=use_convlstm, batch_first=batch_first, output_activation=output_activation, tail=tail)
 
     if pretrained:
-        loaded = model_zoo.load_url(models.resnet.model_urls['resnet{}'.format(num_layers)]) # type: dict
+        if num_layers == 18:
+            loaded = model_zoo.load_url(ResNet18_Weights.IMAGENET1K_V1.url) # type: dict
+        else:
+            loaded = model_zoo.load_url(ResNet50_Weights.IMAGENET1K_V2.url) # type: dict
         # loaded['conv1.weight'] = torch.cat(
         #     [loaded['conv1.weight']] * num_input_images, 1) / num_input_images
         if inplane%3==0:

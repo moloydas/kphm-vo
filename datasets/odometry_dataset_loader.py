@@ -9,13 +9,16 @@ import cv2 as cv
 from utils.nputils import reverse_Rt_matrix, Rt_to_euler_trans_multi, pose_abs_to_first
 import abc
 
-def pil_loader(path):
+def pil_loader(path, gray_scale = False):
     # type: (str) -> Image.Image
     # open path as file to avoid ResourceWarning
     # (https://github.com/python-pillow/Pillow/issues/835)
     with open(path, 'rb') as f:
         with Image.open(f) as img:
-            return img.copy()
+            if gray_scale:
+                return img.copy().convert('L')
+            else:
+                return img.copy()
 
 class OdometryDatasetLoader(abc.ABC):
     def __init__(self,
@@ -201,7 +204,7 @@ class OdometryDatasetLoader(abc.ABC):
     def load_image(self, seq_id, frame_id, camera_id=None):
         curr_img = self.load_image_original(seq_id, frame_id, camera_id)
         cut_u, cut_v, cut_h, cut_w = self.cut_u, self.cut_v, self.cut_h, self.cut_w 
-        curr_img = curr_img.crop((cut_v, cut_u, cut_v+cut_w, cut_u+cut_h)).resize((self.img_width, self.img_height), Image.ANTIALIAS)
+        curr_img = curr_img.crop((cut_v, cut_u, cut_v+cut_w, cut_u+cut_h)).resize((self.img_width, self.img_height), Image.LANCZOS)
         # curr_img = skimage.transform.resize(curr_img[cut_u:cut_u+cut_h, cut_v:cut_v+cut_w], (self.img_height, self.img_width))
         
         return curr_img
@@ -460,5 +463,5 @@ class OdometryDatasetRelatedLoader(object):
 
     def load_image(self, seq_id, frame_id, camera_id=None):
         curr_img = self.load_image_original(seq_id, frame_id, camera_id)
-        curr_img = curr_img.resize((self.img_width, self.img_height), Image.ANTIALIAS)
+        curr_img = curr_img.resize((self.img_width, self.img_height), Image.LANCZOS)
         return curr_img

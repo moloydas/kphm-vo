@@ -196,5 +196,5 @@ class KittiOdometryRelatedLoader(OdometryDatasetRelatedLoader):
     def load_image_original(self, seq_id, frame_id, camera_id=None):
         img_file = os.path.join(self._seq_img_dir(seq_id, camera_id), ('{:0'+str(self._filename_len)+'d}.{}').format(frame_id, 'png'))
         # img = imageio.imread(img_file)
-        img = pil_loader(img_file)
+        img = pil_loader(img_file, True)
         return img
