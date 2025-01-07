@@ -16,8 +16,8 @@ class Parameters():
         self.network = 1
 
         # Path
-        self.ori_dataset_dir =  'dataset/kitti_odom/original'
-        self.dataset_dir =  'dataset/kitti_odom/preprocessed'
+        self.ori_dataset_dir =  '/home/moloy/projects/localization/datasets/kitti'
+        self.dataset_dir =  '/home/moloy/projects/localization/datasets/kitti/preprocessed'
 
         self.train_sequence = [0, 1, 2, 3, 4, 5, 6]
         self.valid_sequence = [7, 8]

@@ -75,7 +75,8 @@ class KittiOdometrySequenceWithHeatmapDataset(KittiOdometrySequenceDataset):
         self.heatmap_loader = None
 
         if return_heatmap:
-            self.heatmap_loader = KittiOdometryRelatedLoader(dataset_related_dir, 'kpheatmap', img_height, img_width)
+            # self.heatmap_loader = KittiOdometryRelatedLoader(dataset_related_dir, 'kpheatmap', img_height, img_width)
+            self.heatmap_loader = KittiOdometryRelatedLoader(dataset_related_dir, 'semantic_heatmap', img_height, img_width)
 
     def __getitem__(self, index):
         rst = super().__getitem__(index)
